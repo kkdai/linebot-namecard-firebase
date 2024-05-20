@@ -43,7 +43,7 @@ func main() {
 	config := &firebase.Config{DatabaseURL: os.Getenv("FIREBASE_URL")}
 	app, err := firebase.NewApp(ctx, config, opt)
 	if err != nil {
-
+		log.Fatalf("error initializing firebase app: %v", err)
 	}
 	client, err := app.Database(ctx)
 	if err != nil {
