@@ -1,8 +1,6 @@
 package main
 
 import (
-	"net/url"
-
 	"github.com/line/line-bot-sdk-go/v8/linebot/messaging_api"
 )
 
@@ -40,10 +38,6 @@ func SendFlexMsg(replyToken string, people map[string]Person, msg string) error 
 
 // getCardFlex: Send flex message to LINE server.
 func getCardFlex(card Person) messaging_api.FlexBubble {
-	// Get URL encode for company name and address
-	companyEncode := url.QueryEscape(card.Company)
-	addressEncode := url.QueryEscape(card.Address)
-
 	return messaging_api.FlexBubble{
 		Size: messaging_api.FlexBubbleSIZE_GIGA,
 		Body: &messaging_api.FlexBox{
@@ -78,25 +72,16 @@ func getCardFlex(card Person) messaging_api.FlexBubble {
 							Size:   "lg",
 							Text:   card.Company,
 							Weight: "bold",
-							Action: &messaging_api.UriAction{
-								Uri: "https://www.google.com/maps/search/?api=1&query=" + companyEncode + "&openExternalBrowser=1",
-							},
 						},
 						&messaging_api.FlexText{
 							Align: "end",
 							Size:  "sm",
 							Text:  card.Address,
-							Action: &messaging_api.UriAction{
-								Uri: "https://www.google.com/maps/search/?api=1&query=" + addressEncode + "&openExternalBrowser=1",
-							},
 						},
 						&messaging_api.FlexText{
 							Align:  "end",
 							Margin: "xxl",
 							Text:   card.Phone,
-							Action: &messaging_api.UriAction{
-								Uri: "tel:" + card.Phone,
-							},
 						},
 						&messaging_api.FlexText{
 							Align: "end",
@@ -109,7 +94,7 @@ func getCardFlex(card Person) messaging_api.FlexBubble {
 							Align: "end",
 							Text:  "更多資訊",
 							Action: &messaging_api.UriAction{
-								Uri: "https://github.com/kkdai/linebot-smart-namecard",
+								Uri: "https://github.com/kkdai/linebot-namecard-firebase",
 							},
 						},
 					},
