@@ -1,7 +1,7 @@
 module github.com/kkdai/linebot-namecard-firebase
 
 // +heroku goVersion go1.22
-go 1.22
+go 1.21
 
 require (
 	firebase.google.com/go v3.13.0+incompatible
