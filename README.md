@@ -1,7 +1,7 @@
 LINE Bot 使用 Google Gemini 1.5 Flash 跟 Firebase Realtime Database 來做的名片小幫手
 ---
 
- [![GoDoc](https://godoc.org/github.com/kkdai/linebot-gemini-pro.svg?status.svg)](https://godoc.org/github.com/kkdai/LineBotTemplate)   ![Go](https://github.com/kkdai/linebot-gemini-pro/workflows/Go/badge.svg) [![goreportcard.com](https://goreportcard.com/badge/github.com/kkdai/linebot-gemini-pro)](https://goreportcard.com/report/github.com/kkdai/linebot-gemini-pro)
+ [![GoDoc](https://godoc.org/github.com/kkdai/linebot-namecard-firebase.svg?status.svg)](https://godoc.org/github.com/kkdai/linebot-namecard-firebase)   ![Go](https://github.com/kkdai/linebot-namecard-firebase/workflows/Go/badge.svg) [![goreportcard.com](https://goreportcard.com/badge/github.com/kkdai/linebot-namecard-firebase)](https://goreportcard.com/report/github.com/kkdai/linebot-namecard-firebase)
 
 ### LINE Bot Screen
 
