@@ -162,7 +162,13 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 				}
 
 				//TODO: Check email first before adding to firebase.
-				// Check if email already exist in DB
+				if fireDB.SearchIfExist(person.Email) {
+					log.Println("Email already exist in DB:", person.Email, "jsonData:", jsonData)
+					if err := replyText(e.ReplyToken, "Email已經存在於資料庫:\n"+jsonData); err != nil {
+						log.Print(err)
+					}
+					continue
+				}
 
 				// Add to firebase
 				err = fireDB.InsertDB(person)
