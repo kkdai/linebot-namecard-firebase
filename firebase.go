@@ -51,16 +51,19 @@ func (f *FireDB) InsertDB(data interface{}) error {
 
 // SearchIfExist search if the email exist in the database
 func (f *FireDB) SearchIfExist(email string) bool {
+	people := make(map[string]Person)
+
 	log.Println("SearchIfExist:", email)
-	var people map[string]Person
-	err := f.NewRef(f.Path).OrderByChild("email").EqualTo(email).Get(f.CTX, &people)
+	err := f.NewRef(f.Path).Get(f.CTX, &people)
 	if err != nil {
 		log.Println("Error getting data from DB:", err)
 		return false
 	}
-	if len(people) > 0 {
-		log.Println("Found data from DB:", people)
-		return true
+	// transfer to json
+	for _, v := range people {
+		if v.Email == email {
+			return true
+		}
 	}
 	return false
 }
