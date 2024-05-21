@@ -4,7 +4,9 @@ import (
 	"context"
 	"log"
 
+	firebase "firebase.google.com/go"
 	"firebase.google.com/go/db"
+	"google.golang.org/api/option"
 )
 
 // Person 定義了 JSON 資料的結構體
@@ -61,4 +63,22 @@ func (f *FireDB) SearchIfExist(email string) bool {
 		return true
 	}
 	return false
+}
+
+// initFirebase: Initialize firebase
+func initFirebase(gap, firebaseURL string, ctx context.Context) {
+	log.Println("initFirebase")
+
+	opt := option.WithCredentialsJSON([]byte(gap))
+	config := &firebase.Config{DatabaseURL: firebaseURL}
+	app, err := firebase.NewApp(ctx, config, opt)
+	if err != nil {
+		log.Fatalf("error initializing firebase app: %v", err)
+	}
+	client, err := app.Database(ctx)
+	if err != nil {
+		log.Fatalf("error initializing database: %v", err)
+	}
+	fireDB.Client = client
+	fireDB.CTX = ctx
 }

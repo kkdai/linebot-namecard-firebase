@@ -19,14 +19,10 @@ import (
 	"net/http"
 	"os"
 
-	firebase "firebase.google.com/go"
 	"github.com/line/line-bot-sdk-go/v8/linebot/messaging_api"
-	"google.golang.org/api/option"
 )
 
-var bucketName string
 var geminiKey string
-var channelToken string
 var ChannelSecret string
 
 var bot *messaging_api.MessagingApiAPI
@@ -35,23 +31,18 @@ var blob *messaging_api.MessagingApiBlobAPI
 func main() {
 	ctx := context.Background()
 	var err error
+
+	// Get the environment variables
 	geminiKey = os.Getenv("GOOGLE_GEMINI_API_KEY")
-	channelToken = os.Getenv("ChannelAccessToken")
+	channelToken := os.Getenv("ChannelAccessToken")
 	ChannelSecret = os.Getenv("ChannelSecret")
+	gap := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")
+	firebaseURL := os.Getenv("FIREBASE_URL")
 
-	opt := option.WithCredentialsJSON([]byte(os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")))
-	config := &firebase.Config{DatabaseURL: os.Getenv("FIREBASE_URL")}
-	app, err := firebase.NewApp(ctx, config, opt)
-	if err != nil {
-		log.Fatalf("error initializing firebase app: %v", err)
-	}
-	client, err := app.Database(ctx)
-	if err != nil {
-		log.Fatalf("error initializing database: %v", err)
-	}
-	fireDB.Client = client
-	fireDB.CTX = ctx
+	// Initialize Firebase
+	initFirebase(gap, firebaseURL, ctx)
 
+	// Initialize LINE Bot
 	bot, err = messaging_api.NewMessagingApiAPI(channelToken)
 	if err != nil {
 		log.Fatal(err)
