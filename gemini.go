@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-"errors"
 	"github.com/google/generative-ai-go/genai"
 	"google.golang.org/api/option"
 )
@@ -47,9 +46,8 @@ func GeminiImage(imgData []byte, prompt string) (string, error) {
 	log.Println("Finished processing image...", resp)
 	if err != nil {
 		log.Println(err)
-		var berr *genai.BlockedError
-		if errors.As(err, &berr) {
-			log.Println("Blocked error:", resp.PromptFeedback)
+		if resp != nil {
+			log.Println("result err log:", resp)
 		}
 		return "", err
 	}
@@ -83,7 +81,7 @@ func printResponse(resp *genai.GenerateContentResponse) string {
 			fmt.Println(part)
 		}
 		for _, sr := range cand.SafetyRatings {
-			log.Println("candidate safty:", cand.sr)
+			log.Println("candidate safty:",sr)
 		}
 	}
 	return ret
