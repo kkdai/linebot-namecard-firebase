@@ -18,25 +18,25 @@ func GeminiImage(imgData []byte, prompt string) (string, error) {
 	defer client.Close()
 
 	model := client.GenerativeModel("gemini-pro-vision")
-	model.SafetySettings = []*genai.SafetySetting{
-		{
-			Category:  genai.HarmCategoryUnspecified,
-			Threshold: genai.HarmBlockNone,
-		},
-		{
-			Category:  genai.HarmCategoryHarassment,
-			Threshold: genai.HarmBlockNone,
-		},
-		{
-			Category:  genai.HarmCategoryViolence,
-			Threshold: genai.HarmBlockNone,
-		},
-		{
-			Category:  genai.HarmCategorySexualContent,
-			Threshold: genai.HarmBlockNone,
-		},
-	}
-	value := float32(0.5)
+	// model.SafetySettings = []*genai.SafetySetting{
+	// 	{
+	// 		Category:  genai.HarmCategoryUnspecified,
+	// 		Threshold: genai.HarmBlockNone,
+	// 	},
+	// 	{
+	// 		Category:  genai.HarmCategoryHarassment,
+	// 		Threshold: genai.HarmBlockNone,
+	// 	},
+	// 	{
+	// 		Category:  genai.HarmCategoryViolence,
+	// 		Threshold: genai.HarmBlockNone,
+	// 	},
+	// 	{
+	// 		Category:  genai.HarmCategorySexualContent,
+	// 		Threshold: genai.HarmBlockNone,
+	// 	},
+	// }
+	value := float32(0.8)
 	model.Temperature = &value
 	data := []genai.Part{
 		genai.ImageData("png", imgData),
@@ -81,6 +81,9 @@ func printResponse(resp *genai.GenerateContentResponse) string {
 		for _, part := range cand.Content.Parts {
 			ret = ret + fmt.Sprintf("%v", part)
 			fmt.Println(part)
+		}
+		if cand.SafetyRatings != nil {
+			log.Println("candidate safty:", cand.SafetyRatings)
 		}
 	}
 	return ret
