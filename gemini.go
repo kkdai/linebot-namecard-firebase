@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
-
+"errors"
 	"github.com/google/generative-ai-go/genai"
 	"google.golang.org/api/option"
 )
@@ -18,6 +18,16 @@ func GeminiImage(imgData []byte, prompt string) (string, error) {
 	defer client.Close()
 
 	model := client.GenerativeModel("gemini-pro-vision")
+	model.SafetySettings = []*genai.SafetySetting{
+		{
+			Category:  genai.HarmCategoryUnspecified,
+			Threshold: genai.HarmBlockNone,
+		},
+		{
+			Category:  genai.HarmCategoryHarassment,
+			Threshold: genai.HarmBlockNone,
+		},
+	}
 	value := float32(0.8)
 	model.Temperature = &value
 	data := []genai.Part{
@@ -28,7 +38,11 @@ func GeminiImage(imgData []byte, prompt string) (string, error) {
 	resp, err := model.GenerateContent(ctx, data...)
 	log.Println("Finished processing image...", resp)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		var berr *genai.BlockedError
+		if errors.As(err, &berr) {
+			log.Println("Blocked error:", resp.PromptFeedback)
+		}
 		return "", err
 	}
 
