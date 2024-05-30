@@ -199,28 +199,6 @@ func callbackHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// ProcessImage: Process an image and reply with a text.
-func processImage(target, m_id, prompt, errMsg string, blob *messaging_api.MessagingApiBlobAPI) {
-	// Get image data
-	data, err := GetImageBinary(blob, m_id)
-	if err != nil {
-		log.Printf("Got GetMessageContent err: %v", err)
-		return
-	}
-
-	// Chat with Image
-	ret, err := GeminiImage(data, prompt)
-	if err != nil {
-		log.Printf("Got %s err: %v", errMsg, err)
-		return
-	}
-
-	// Determine the push msg target.
-	if err := replyText(target, ret); err != nil {
-		log.Print(err)
-	}
-}
-
 // GetImageBinary: Get image binary from LINE server based on message ID.
 func GetImageBinary(blob *messaging_api.MessagingApiBlobAPI, messageID string) ([]byte, error) {
 	// Get image binary from LINE server based on message ID.
