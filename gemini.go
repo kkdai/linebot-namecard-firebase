@@ -27,8 +27,16 @@ func GeminiImage(imgData []byte, prompt string) (string, error) {
 			Category:  genai.HarmCategoryHarassment,
 			Threshold: genai.HarmBlockNone,
 		},
+		{
+			Category:  genai.HarmCategoryViolence,
+			Threshold: genai.HarmBlockNone,
+		},
+		{
+			Category:  genai.HarmCategorySexualContent,
+			Threshold: genai.HarmBlockNone,
+		},
 	}
-	value := float32(0.8)
+	value := float32(0.5)
 	model.Temperature = &value
 	data := []genai.Part{
 		genai.ImageData("png", imgData),
