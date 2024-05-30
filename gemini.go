@@ -82,8 +82,8 @@ func printResponse(resp *genai.GenerateContentResponse) string {
 			ret = ret + fmt.Sprintf("%v", part)
 			fmt.Println(part)
 		}
-		if cand.SafetyRatings != nil {
-			log.Println("candidate safty:", cand.SafetyRatings)
+		for _, sr := range cand.SafetyRatings {
+			log.Println("candidate safty:", cand.sr)
 		}
 	}
 	return ret
